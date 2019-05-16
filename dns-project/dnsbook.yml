@@ -1,0 +1,110 @@
+---
+- name: Configuration DNS Server Master
+  hosts: [DNS-Master]
+  gather_facts: yes
+  become: true
+  become_method: sudo
+
+
+  vars_files:
+ #   - vars/main.yml
+    - vars.yml
+
+  tasks:
+
+      - name: Update
+        shell: apt-get update -y warn=no && apt-get install bind9 bind9utils bind9-doc -y warn=no
+        changed_when: false
+
+      - name: Bind9
+        copy:
+          src: bind9.j2
+          dest: /etc/default/bind9
+
+      - name: Restart Bind9 Service
+        shell: service bind9 restart
+        changed_when: true
+
+      - name: named.conf.options
+        copy:
+          src: master-named.conf.options.j2
+          dest: /etc/bind/named.conf.options
+
+      - name: named.conf.local
+        copy:
+          src: master-named.conf.local.j2
+          dest: /etc/bind/named.conf.local
+        changed_when: false
+     
+      - name: Creates directory
+        file:
+          path: /etc/bind/zones
+          state: directory
+        changed_when: false
+
+      - name: Copy db.local in db.{{dns}}
+        copy:
+          src: db.dns.j2
+          dest: /etc/bind/zones/db.{{dns}}
+#        changed_when: false
+      - name: Copy db.local in db.{{cid}}
+        copy:
+          src: db.cid.j2
+          dest: /etc/bind/zones/db.{{cid}}
+
+      - name: check conf
+        shell: named-checkconf
+
+      - name: check dns
+        shell: named-checkzone {{dns}} /etc/bind/zones/db.{{dns}}
+
+      - name: check dns
+        shell: named-checkzone {{cid}}.in.addr.arpa /etc/bind/zones/db.{{dns}}
+
+      - name: open FW access Bind
+        shell: sudo ufw allow Bind9 
+
+- name: Configuration DNS Server Slave
+  hosts: [DNS-Slave]
+  gather_facts: yes
+  become: true
+  become_method: sudo
+
+  vars_files:
+ #   - vars/main.yml
+    - vars.yml
+
+  tasks:
+
+      - name: Update
+        shell: apt-get update -y warn=no && apt-get install bind9 bind9utils bind9-doc -y warn=no
+        changed_when: false
+
+      - name: Bind9
+        copy:
+          src: bind9.j2
+          dest: /etc/default/bind9
+
+      - name: named.conf.options
+        copy:
+          src: slave-named.conf.options.j2
+          dest: /etc/bind/named.conf.options
+
+      - name: named.conf.local
+        copy:
+          src: slave-named.conf.local.j2
+          dest: /etc/bind/named.conf.local
+        changed_when: false
+
+      - name: check conf
+        shell: named-checkconf
+
+      - name: open FW access Bind
+        shell: sudo ufw allow Bind9 
+
+
+
+
+
+
+  

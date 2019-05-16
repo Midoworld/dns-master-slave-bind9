@@ -1,0 +1,21 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ns1.test1.energismesand.com. admin.test1.energismesand.com. (
+                              3         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+; name servers -NS records
+        IN      NS      ns1.test1.energismesand.com.
+        IN      NS      ns2.test1.energismesand.com.
+
+
+; PTR Records
+9.0     IN      PTR     ns1.test1.energismesand.com.    ; 12.48.0.9
+8.0     IN      PTR     ns2.test1.energismesand.com.    ; 12.48.0.8
+5.0     IN      PTR     host1.test1.energismesand.com.  ; 12.48.0.5
+6.0     IN      PTR     host2.test1.energismesand.com.  ; 12.48.0.6
