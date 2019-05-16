@@ -1,0 +1,8 @@
+
+DNSMASTER_IP: 12.48.0.9
+DNSSLAVE_IP: 12.48.0.8
+NAME: service1                         # exemple: pour une entrée dns pour kafka    NAME: kafka
+DOMAIN: test1.energismesand.com        # dns_name exemple : google.com ,   vpc1.energisme.com
+PRIVAT_IP: 198.168.10.25               # ip privée 
+HOSTNAME: hostx                        # le nom du serveur 
+REV_DOMAIN: 25.10                      # exemple : si notre ip 198.168.10.25   avec un CIDR 198.168.0.0/24   REV_DOMAIN: 25.10       

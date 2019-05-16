@@ -1,0 +1,9 @@
+network:
+    version: 2
+    ethernets:
+        eth0:                                 # Private network interface
+            nameservers:
+                addresses:
+                - {{dnsmaster_ip}}                # Private IP for ns1
+                - {{dnsslave_ip}}                # Private IP for ns2
+                search: [ {{domain}} ]  # DNS zone

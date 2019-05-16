@@ -1,0 +1,46 @@
+---
+- name: Management Entry DNS
+  #  hosts: [DNS-Master]
+  hosts: localhost
+  gather_facts: yes
+  become: true
+  become_method: sudo
+
+  #  vars_files:
+ #   - vars/main.yml
+ #  - vars.yml
+
+  tasks:
+
+
+
+            - lineinfile:
+                    #  dest: /etc/ansible/ansible.cfg
+                  dest: /etc/bind/named.conf.options.back
+                  line: '#inventory = /home/ubuntu/inventoryini'
+                  # insertafter: '\[defaults\]'
+                  insertafter: 'acl \"trusted\" \{'
+
+            - lineinfile:
+                  dest: /etc/bind/zones/db.12.48.back
+                  line: '5.0     IN      PTR     testrecordeviaansible.test1.energismesand.com.  ; 12.48.0.55'
+                  insertafter: '\; PTR Records'
+
+
+            - lineinfile:
+                  dest: /etc/bind/zones/db.test1.energismesand.com.back
+                  line: 'testrecordviaansible.test1.energismesand.com.          IN      A       12.48.0.55'
+                  insertafter: '\; 12.48.0.0/19 - A record'
+
+
+
+            - lineinfile:
+                  dest: /etc/bind/named.conf.options.back
+                  line: '        12.48.0.15;  # host3:'
+                  insertafter: 'acl \"trusted\" \{'
+
+
+            - lineinfile:
+                  dest: /etc/bind/named.conf.options.back
+                  line: '        12.48.0.15;  # host3:'
+                  insertafter: 'acl \"trusted\" \{'

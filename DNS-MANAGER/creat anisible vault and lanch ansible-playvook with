@@ -1,0 +1,7 @@
+  
+    pwgen 256 1 > vault_pass_file  
+   
+   ANSIBLE_VAULT_PASSWORD_FILE=vault_pass_file ansible-vault encrypt databag1.yml 
+  
+
+   ANSIBLE_VAULT_PASSWORD_FILE=vault_pass_file ansible-playbook usermanagment.yml -i inventory  -u sidi --ask-become-pass -vvv
